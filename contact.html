@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ | 北九州物販事業者協同組合</title>
+  <meta name="description" content="北九州物販事業者協同組合へのお問い合わせページです。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo" style="text-decoration:none;">
+      <span class="org-name">北九州物販事業者協同組合</span>
+      <span class="org-abbr">KITAKYUSHU BUPPAN</span>
+    </a>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="index.html">業務内容</a></li>
+        <li><a href="about.html">事務所紹介</a></li>
+        <li><a href="members.html">参加企業</a></li>
+        <li><a href="gaiyou.html">組織概要</a></li>
+        <li><a href="consulting.html">コンサルティング</a></li>
+        <li><a href="contact.html">お問い合わせ</a></li>
+      </ul>
+    </nav>
+    <button class="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="breadcrumb">
+    <a href="index.html">ホーム</a><span>›</span>お問い合わせ
+  </div>
+  <h1>お問い合わせ</h1>
+  <p>ご質問・ご相談はお気軽にどうぞ</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- CONTACT INFO -->
+      <div class="contact-info">
+        <h3>連絡先情報</h3>
+
+        <div class="contact-item">
+          <span class="icon">📍</span>
+          <div>
+            <strong>所在地</strong>
+            〒820-0066<br>福岡県飯塚市幸袋781-258
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <span class="icon">📞</span>
+          <div>
+            <strong>電話 / FAX</strong>
+            <a href="tel:0948246315">0948-24-6315</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <span class="icon">✉️</span>
+          <div>
+            <strong>メールアドレス</strong>
+            <a href="mailto:info@kitakyubuppan.com">info@kitakyubuppan.com</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <span class="icon">🕐</span>
+          <div>
+            <strong>受付時間</strong>
+            平日 10:00〜18:00<br>
+            <span style="font-size:0.82rem;color:var(--text-muted);">土日祝・年末年始を除く</span>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;padding:20px;background:var(--bg-gray);border-radius:var(--radius);">
+          <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.7;">
+            お問い合わせ内容によっては、回答までにお時間をいただく場合があります。<br>
+            通常、2〜3営業日以内にご連絡いたします。
+          </p>
+        </div>
+      </div>
+
+      <!-- CONTACT FORM -->
+      <div>
+        <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p style="display:none;">
+            <label>Don't fill this out: <input name="bot-field"></label>
+          </p>
+
+          <div class="form-group">
+            <label for="name">お名前<span class="req">*</span></label>
+            <input type="text" id="name" name="name" required placeholder="山田 太郎">
+          </div>
+
+          <div class="form-group">
+            <label for="company">会社名・屋号</label>
+            <input type="text" id="company" name="company" placeholder="株式会社〇〇">
+          </div>
+
+          <div class="form-group">
+            <label for="email">メールアドレス<span class="req">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="example@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">電話番号</label>
+            <input type="tel" id="phone" name="phone" placeholder="09X-XXXX-XXXX">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">お問い合わせ種別<span class="req">*</span></label>
+            <select id="subject" name="subject" required>
+              <option value="">選択してください</option>
+              <option value="コンサルティング">コンサルティングサービスについて</option>
+              <option value="組合参加">組合への参加について</option>
+              <option value="共同仕入">共同仕入について</option>
+              <option value="商品拡販">商品拡販支援について</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">お問い合わせ内容<span class="req">*</span></label>
+            <textarea id="message" name="message" required placeholder="お問い合わせ内容をご記入ください"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label style="display:flex;align-items:flex-start;gap:10px;font-weight:400;cursor:pointer;">
+              <input type="checkbox" required style="width:auto;margin-top:4px;">
+              <span style="font-size:0.85rem;color:var(--text-muted);">
+                <a href="tokushoho.html" target="_blank">特定商取引法に基づく表記</a>および
+                プライバシーポリシーに同意します
+              </span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">送信する</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>北九州物販事業者協同組合</h3>
+        <p>福岡県飯塚市に事務所を構え、北九州・筑豊周辺に限らず九州一円で活動する物販事業者の協同組合です。</p>
+      </div>
+      <nav class="footer-nav">
+        <h4>サービス</h4>
+        <ul>
+          <li><a href="index.html">業務内容</a></li>
+          <li><a href="consulting.html">コンサルティング</a></li>
+          <li><a href="members.html">参加企業紹介</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-nav">
+        <h4>組合について</h4>
+        <ul>
+          <li><a href="about.html">事務所紹介</a></li>
+          <li><a href="gaiyou.html">組織概要</a></li>
+          <li><a href="contact.html">お問い合わせ</a></li>
+          <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 北九州物販事業者協同組合. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
