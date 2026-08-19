@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /thanks
+
+Sitemap: https://www.kitakyusyubuppan.com/sitemap.xml

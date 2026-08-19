@@ -1,0 +1,10 @@
+name = "kitakyushu-buppan"
+compatibility_date = "2026-04-22"
+pages_build_output_dir = "public"
+
+# 2026-08-04 に作成済みの D1 を再利用する（新規作成すると孤児リソースが増えるため）
+[[d1_databases]]
+binding = "DB"
+database_name = "kitakyushu-coop-contacts"
+database_id = "a290aa28-221c-4866-91d1-9c52090949d2"
+migrations_dir = "migrations"

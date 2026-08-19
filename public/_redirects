@@ -1,0 +1,27 @@
+# Cloudflare Pages リダイレクト設定
+# 旧Wixサイト（www.kitakyusyubuppan.com）のURLを新ページへ引き継ぐ。
+# Cloudflare Pages は /foo.html を /foo へ自動で 308 リダイレクトするため、
+# 拡張子つきURLの受け皿をここに書く必要はない。
+
+# --- 旧Wixページ → 新ページ ---
+/about-5                          /consulting              301
+/general-5                        /tokushoho               301
+/map                              /about                   301
+/blank                            /                        301
+
+# 重複していた3ページ（本文がすべて同一だったもの）は業務内容ページへ統合
+# ※ パーセントエンコードされたURLで届いた場合も Cloudflare 側でデコードして照合される
+/複製-共同仕入事業                /services                301
+/複製-商品拡販支援事業            /services                301
+/複製-コンサルティングサービス    /services                301
+
+# 旧サイトマップ（Wixが生成していたもの）→ 現行サイトマップ
+# ワイルドカードを含む行より前に置く（Cloudflare の推奨順）
+/pages-sitemap.xml                /sitemap.xml             301
+/blog-posts-sitemap.xml           /sitemap.xml             301
+/blog-categories-sitemap.xml      /sitemap.xml             301
+
+# 旧ブログ（Wix Blog）→ お知らせ
+/blog                             /news                    301
+/blog/*                           /news                    301
+/post/*                           /news                    301
