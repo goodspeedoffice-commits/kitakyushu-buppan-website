@@ -14,12 +14,14 @@
 ## デプロイ
 
 ```bash
-npx wrangler pages deploy --branch main
+npx wrangler pages deploy
 ```
 
-> **`--branch main` は必須。**
-> Cloudflare Pages 側の本番ブランチが `main` である一方、このリポジトリのブランチは `master`。
-> 省略すると `master` 扱いになり、本番ではなくプレビュー環境へデプロイされる。
+Cloudflare Pages 側の本番ブランチは `master`（このリポジトリのブランチと一致）。
+フラグを付けずに実行すれば本番へ反映される。2026-08-20 に実際にデプロイして Production 判定を確認済み。
+
+> 以前は Pages 側が `main` を本番としていたため `--branch main` が必要だったが、
+> 付け忘れると本番が更新されないまま成功表示になる事故が起きるため、`master` へ揃えた。
 
 ## データベースのマイグレーション
 
