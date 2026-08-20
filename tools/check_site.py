@@ -50,6 +50,9 @@ REQUIRED_MIGRATED_CONTENT = {
         "https://www.youtube.com/@obo5290",
         "https://instagram.com/kitakyubuppan/",
         "https://www.facebook.com/kitakyubuppan",
+        "/images/members/goodspeed-office.avif",
+        "/images/members/fujien.avif", "/images/members/shop-kikyou.avif",
+        "/images/members/cinnamon-house.avif", "/images/members/kitakyushu-coop.avif",
     ],
     "services.html": [
         'id="joint-purchasing"', 'id="product-expansion"',
@@ -76,6 +79,10 @@ REQUIRED_MIGRATED_CONTENT = {
         "https://goodspeedoffice.hanbai-lab.com/", "https://fujien-inc.co.jp/",
         "https://www.instagram.com/goodspeed1978/?hl=ja",
         "https://x.com/greenspeed17", "https://www.facebook.com/tosihiro.obo",
+        "/images/members/goodspeed-office.avif",
+        "/images/members/fujien.avif", "/images/members/member-placeholder.avif",
+        "/images/members/shop-kikyou.avif", "/images/members/cinnamon-house.avif",
+        "/images/members/kitakyushu-coop.avif",
     ],
     "contact.html": [
         "〒820-0066", "福岡県飯塚市幸袋781-258",
@@ -124,10 +131,13 @@ if not pages:
 
 # 実在するパスの集合（Cloudflare Pages は /foo.html を /foo で配信する）
 available = {"/"}
+for asset in ROOT.rglob("*"):
+    if asset.is_file():
+        available.add("/" + asset.relative_to(ROOT).as_posix())
 for p in pages:
     available.add("/" + p.stem)
     available.add("/" + p.name)
-for extra in ["/css/style.css", "/js/main.js", "/robots.txt", "/sitemap.xml", "/api/contact"]:
+for extra in ["/api/contact"]:
     available.add(extra)
 
 for p in pages:

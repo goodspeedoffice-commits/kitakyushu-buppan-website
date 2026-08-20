@@ -1230,6 +1230,54 @@ textarea:focus-visible {
   .sns-btn { min-width: 0; width: 100%; }
 }
 
+.member-logo {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 6px;
+  margin: 0 auto 16px;
+}
+
+.member-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.member-logo-item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.member-logo-item img {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.member-logo-item span {
+  color: var(--primary);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .member-logo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* ===================== 組合員専用リンク集 ===================== */
 .private-badge {
   display: inline-flex;
