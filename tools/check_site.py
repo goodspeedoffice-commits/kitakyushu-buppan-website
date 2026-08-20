@@ -52,6 +52,9 @@ REQUIRED_MIGRATED_CONTENT = {
         "https://www.youtube.com/@obo5290",
         "https://instagram.com/kitakyubuppan/",
         "https://www.facebook.com/kitakyubuppan",
+        "組合の最新情報を発信中",
+        "/images/social/instagram-coop.png",
+        "/images/social/facebook.png",
         "/images/site/analytics-dashboard-stock.avif",
         "/images/site/ecommerce-packing-stock.avif",
         "/images/site/consulting-meeting-stock.avif",
@@ -173,6 +176,9 @@ for p in pages:
     html = p.read_text(encoding="utf-8")
     name = p.name
 
+    if 'href="/favicon.svg?v=20260820"' not in html:
+        errors.append(f"{name}: 組合ファビコンの指定がありません")
+
     # 公開ページの上部メニューに、提携先と組合員専用ページへの入口を維持する。
     if name != "members-only.html":
         nav_match = re.search(r'<nav class="site-nav".*?</nav>', html, re.S)
@@ -180,7 +186,7 @@ for p in pages:
             errors.append(f"{name}: 上部メニューがありません")
         else:
             nav = nav_match.group(0)
-            for required_link in ['href="/partners"', 'href="/members-only"']:
+            for required_link in ['href="/partners"', 'href="/news"', 'href="/members-only"']:
                 if required_link not in nav:
                     errors.append(f"{name}: 上部メニューの必須リンクが欠けています -> {required_link}")
 

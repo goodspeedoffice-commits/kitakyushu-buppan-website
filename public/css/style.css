@@ -198,6 +198,49 @@ img { max-width: 100%; height: auto; display: block; }
   justify-content: center;
 }
 
+.hero-social {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-social-label {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+}
+
+.hero-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 5px 14px 5px 6px;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.94);
+  color: var(--primary);
+  font-size: 0.86rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+
+.hero-social-link img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.hero-social-link:hover {
+  color: var(--accent-dark);
+  background: #fff;
+  transform: translateY(-2px);
+}
+
 .btn {
   display: inline-block;
   padding: 12px 28px;
