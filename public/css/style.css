@@ -324,6 +324,10 @@ img { max-width: 100%; height: auto; display: block; }
   padding: 28px 24px;
   transition: transform var(--transition), box-shadow var(--transition);
   text-align: center;
+  /* リンクの有無にかかわらずカード内の要素を同じ高さに揃える */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .member-card:hover {
@@ -350,6 +354,12 @@ img { max-width: 100%; height: auto; display: block; }
   font-weight: 700;
   color: var(--primary);
   margin-bottom: 4px;
+  /* 社名が1行でも2行でも下の要素の位置が動かないようにする（2行ぶんを確保） */
+  line-height: 1.5;
+  min-height: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .member-card .member-rep {
@@ -357,6 +367,9 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--text-muted);
   margin-bottom: 16px;
 }
+
+/* リンク行はカード下端に揃える（リンクが無いカードとも高さが揃う） */
+.member-card .member-links { margin-top: auto; }
 
 .member-links {
   display: flex;
@@ -368,14 +381,19 @@ img { max-width: 100%; height: auto; display: block; }
 .member-link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 6px;
   font-size: 0.78rem;
-  padding: 4px 10px;
+  line-height: 1;
+  min-height: 30px;
+  padding: 4px 12px;
   border: 1px solid var(--border);
   border-radius: 20px;
   color: var(--text-muted);
   transition: all var(--transition);
 }
+
+.member-link .svg-icon { flex: 0 0 14px; width: 14px; height: 14px; }
 
 .member-link:hover {
   border-color: var(--primary-light);
@@ -433,11 +451,14 @@ img { max-width: 100%; height: auto; display: block; }
   align-items: flex-start;
 }
 
-.contact-item .icon {
-  font-size: 1.1rem;
-  margin-top: 2px;
-  flex-shrink: 0;
+.contact-item .info-icon {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
 }
+
+.contact-item .info-icon svg { width: 20px; height: 20px; }
 
 .contact-item p {
   font-size: 0.9rem;
@@ -591,6 +612,8 @@ img { max-width: 100%; height: auto; display: block; }
   display: flex;
   gap: 10px;
 }
+
+.social-link svg { width: 17px; height: 17px; display: block; }
 
 .social-link {
   width: 32px;
@@ -1133,4 +1156,76 @@ textarea:focus-visible {
 
 @media (max-width: 1000px) and (min-width: 769px) {
   .site-nav a { font-size: 0.78rem; padding: 6px 8px; }
+}
+
+
+/* ===================== ICONS（整列） =====================
+   絵文字は書体ごとに字幅が違い（例: ▶=12.5px / f=4.1px / 絵文字=17.1px）、
+   横に並べるとアイコンと文字の頭が揃わない。SVG＋固定幅スロットで揃える。 */
+.svg-icon {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+/* 情報行（アイコン＋見出し＋本文） */
+.info-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.info-icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-dark);
+  margin-top: 1px;
+}
+
+.info-icon svg { width: 21px; height: 21px; display: block; }
+
+.info-row .info-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.info-row .info-value { font-size: 0.9rem; color: var(--text-muted); }
+
+/* SNSボタン（横幅を揃えて等間隔に並べる） */
+.sns-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sns-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 190px;
+  padding: 14px 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: var(--bg);
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.sns-btn .svg-icon { flex: 0 0 18px; width: 18px; height: 18px; }
+.sns-btn:hover { border-color: var(--primary-light); color: var(--primary-light); }
+
+@media (max-width: 480px) {
+  .sns-btn { min-width: 0; width: 100%; }
 }
