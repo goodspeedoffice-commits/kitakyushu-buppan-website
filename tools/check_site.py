@@ -47,7 +47,8 @@ REQUIRED_MIGRATED_CONTENT = {
         "九州・沖縄・山口", "北九州市・飯塚市を拠点に、九州・沖縄・山口の物販事業者の連携と成長を支援します",
         "共同仕入事業", "商品拡販支援事業", "商品企画開発事業",
         "共同販売事業", "物販サポート事業", "商品買取再販事業",
-        'href="/members"', "参加企業紹介",
+        'href="/members"', "参加企業紹介", 'href="/partners"',
+        'href="/members-only"',
         "https://www.youtube.com/@obo5290",
         "https://instagram.com/kitakyubuppan/",
         "https://www.facebook.com/kitakyubuppan",
@@ -93,6 +94,19 @@ REQUIRED_MIGRATED_CONTENT = {
         "/images/members/shop-kikyou.avif", "/images/members/cinnamon-house.avif",
         "/images/members/kitakyushu-coop.avif",
         'aria-hidden="true"',
+    ],
+    "partners.html": [
+        "八幡東就労支援センターすずらん",
+        "社会福祉法人 北九州フレンド社",
+        "實松 夏連",
+        "デザイナー／業務委託パートナー",
+        "EC・広告用画像、バナー制作",
+        "梱包・FBA納品準備",
+    ],
+    "gaiyou.html": [
+        "取引金融機関", "ゆうちょ銀行",
+        "福岡県中小企業団体中央会", "筑豊支所",
+        "定款変更", "決算関係書類",
     ],
     "contact.html": [
         "〒820-0066", "福岡県飯塚市幸袋781-258",
@@ -156,6 +170,17 @@ for p in pages:
     html = p.read_text(encoding="utf-8")
     name = p.name
 
+    # 公開ページの上部メニューに、提携先と組合員専用ページへの入口を維持する。
+    if name != "members-only.html":
+        nav_match = re.search(r'<nav class="site-nav".*?</nav>', html, re.S)
+        if not nav_match:
+            errors.append(f"{name}: 上部メニューがありません")
+        else:
+            nav = nav_match.group(0)
+            for required_link in ['href="/partners"', 'href="/members-only"']:
+                if required_link not in nav:
+                    errors.append(f"{name}: 上部メニューの必須リンクが欠けています -> {required_link}")
+
     for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
         try:
             json.loads(m.group(1))
@@ -216,6 +241,14 @@ for p in pages:
         tag = m.group(0)
         if 'target="_blank"' in tag and "noopener" not in tag:
             errors.append(f"{name}: target=_blank に rel=noopener がありません -> {tag[:90]}")
+
+# 旧Wixトップの背景画像がCSSから外れたり、画像本体が消えたりしないことを確認する。
+style_css = (ROOT / "css" / "style.css").read_text(encoding="utf-8")
+hero_image = ROOT / "images" / "site" / "original-home-hero.jpg"
+if '/images/site/original-home-hero.jpg' not in style_css:
+    errors.append("style.css: 旧Wixトップ背景画像の指定がありません")
+if not hero_image.exists():
+    errors.append("images/site/original-home-hero.jpg: 旧Wixトップ背景画像がありません")
 
 # sitemap.xml と実ページの突き合わせ
 sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")

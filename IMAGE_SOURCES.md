@@ -9,6 +9,7 @@
 | `exhibition-members.avif` | `714bd6_9e27a2967a664f6d806ec8ebca0dd8b7~mv2.png` | 商談会の集合写真 |
 | `cooperative-booth-members.avif` | `714bd6_67b2b84980a54bc78e9caed0b07a57e5~mv2.png` | 展示会ブースの集合写真 |
 | `shinkin-event-2023.avif` | `714bd6_0b44c6960b0742dbbaaa4a3a527a8e70~mv2.jpg` | 第7回しんきん合同商談会の記事画像 |
+| `original-home-hero.jpg` | `5bfb6f_a463284fd84145f292a32dc0f0e0cc31.jpg` | 旧Wixトップページの市街地背景 |
 
 ## 無料素材
 
