@@ -4,7 +4,7 @@
  * 動作:
  *   1. 入力を検証する（必須項目・形式・長さ・ハニーポット・同一IPの連投）
  *   2. D1 に保存する ← ここが成功して初めて「受付完了」とみなす
- *   3. RESEND_API_KEY と CONTACT_NOTIFY_TO が設定されていればメール通知も送る
+ *   3. メール通知を送る（Brevo。未設定なら送らず、その事実を記録に残す）
  *
  * 設計方針:
  *   - 保存に失敗したら必ずエラーを返す。成功したように見せない。
@@ -118,22 +118,10 @@ function resolveClientIp(request) {
   return '';
 }
 
-async function sendNotification(env, record) {
-  const apiKey = env.RESEND_API_KEY;
-  const to = env.CONTACT_NOTIFY_TO;
-  const from = env.CONTACT_NOTIFY_FROM;
-
-  if (!apiKey || !to || !from) {
-    return {
-      notified: false,
-      reason:
-        'メール通知は未設定です（RESEND_API_KEY / CONTACT_NOTIFY_TO / CONTACT_NOTIFY_FROM のいずれかが未登録）。問い合わせ内容はデータベースに保存済みです。',
-    };
-  }
-
-  const lines = [
+function notifyBody(record) {
+  return [
     `受付番号: ${record.receiptId}`,
-    `受付日時: ${record.createdAt}`,
+    `受付日時: ${record.createdAtJst}`,
     '',
     `会社名・事業者名: ${record.company}`,
     `ご担当者名: ${record.name}`,
@@ -142,31 +130,101 @@ async function sendNotification(env, record) {
     `Amazonでの販売状況: ${record.amazonStatus || '（未選択）'}`,
     `希望する支援: ${record.support.length ? record.support.join(' / ') : '（未選択）'}`,
     '',
-    'ご相談内容:',
+    '── ご相談内容 ──',
     record.message,
-  ];
+    '',
+    '──────────',
+    'このメールにそのまま返信すると、お問い合わせ者へ届きます。',
+    'サイト: https://www.kitakyusyubuppan.com/contact',
+  ].join('\n');
+}
 
-  const res = await fetch('https://api.resend.com/emails', {
+// "a@example.com, b@example.com" 形式を配列にする
+function parseRecipients(value) {
+  return String(value || '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+async function sendViaBrevo(env, record, to) {
+  const from = env.CONTACT_NOTIFY_FROM;
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
+      'api-key': env.BREVO_API_KEY,
+      'content-type': 'application/json',
+      accept: 'application/json',
     },
     body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: record.email,
+      sender: { name: '北九州物販事業者協同組合 サイト', email: from },
+      to: to.map((email) => ({ email })),
+      replyTo: { email: record.email, name: record.name },
       subject: `【サイト問い合わせ】${record.company} 様（${record.receiptId}）`,
-      text: lines.join('\n'),
+      textContent: notifyBody(record),
     }),
   });
 
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
-    throw new Error(`Resend API がエラーを返しました (HTTP ${res.status}): ${detail.slice(0, 300)}`);
+    throw new Error(`Brevo がエラーを返しました (HTTP ${res.status}): ${detail.slice(0, 300)}`);
+  }
+  return 'brevo';
+}
+
+async function sendViaResend(env, record, to) {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: env.CONTACT_NOTIFY_FROM,
+      to,
+      reply_to: record.email,
+      subject: `【サイト問い合わせ】${record.company} 様（${record.receiptId}）`,
+      text: notifyBody(record),
+    }),
+  });
+
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    throw new Error(`Resend がエラーを返しました (HTTP ${res.status}): ${detail.slice(0, 300)}`);
+  }
+  return 'resend';
+}
+
+/**
+ * 通知メールを送る。
+ * BREVO_API_KEY があれば Brevo、無ければ RESEND_API_KEY で Resend を使う。
+ * どちらも無い場合は送らず、その事実を理由付きで返す（黙って成功扱いにしない）。
+ */
+async function sendNotification(env, record) {
+  const to = parseRecipients(env.CONTACT_NOTIFY_TO);
+  const from = env.CONTACT_NOTIFY_FROM;
+
+  if (!to.length || !from) {
+    return {
+      notified: false,
+      reason: 'CONTACT_NOTIFY_TO または CONTACT_NOTIFY_FROM が未設定のため通知していません。内容はデータベースに保存済みです。',
+    };
   }
 
-  return { notified: true, reason: null };
+  if (env.BREVO_API_KEY) {
+    const via = await sendViaBrevo(env, record, to);
+    return { notified: true, reason: null, via };
+  }
+
+  if (env.RESEND_API_KEY) {
+    const via = await sendViaResend(env, record, to);
+    return { notified: true, reason: null, via };
+  }
+
+  return {
+    notified: false,
+    reason: 'BREVO_API_KEY / RESEND_API_KEY のいずれも未設定のため通知していません。内容はデータベースに保存済みです。',
+  };
 }
 
 export async function onRequestPost({ request, env }) {
@@ -234,6 +292,9 @@ export async function onRequestPost({ request, env }) {
   const record = {
     receiptId,
     createdAt,
+    createdAtJst: new Intl.DateTimeFormat('ja-JP', {
+      timeZone: 'Asia/Tokyo', dateStyle: 'medium', timeStyle: 'short',
+    }).format(now),
     company: values.company,
     name: values.name,
     email: values.email,

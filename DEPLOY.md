@@ -38,18 +38,50 @@ npx wrangler d1 migrations apply kitakyushu-coop-contacts --remote
 npx wrangler d1 execute kitakyushu-coop-contacts --remote --command "SELECT receipt_id, created_at, organization, name, email, subject, notification_status FROM contact_submissions ORDER BY id DESC LIMIT 20;"
 ```
 
-## メール通知を有効にする（任意）
+## メール通知（稼働中）
 
-現在は D1 への保存のみ。メール通知を使う場合は、以下3つを Secrets に登録すると自動的に送信されるようになる。
-コード変更は不要。
+問い合わせがあると Brevo 経由でメールが届く。2026-08-20 に実送信で配信確認済み。
+
+| 変数 | 値 | 種別 |
+|---|---|---|
+| `BREVO_API_KEY` | 組合の Brevo アカウントのキー | secret_text |
+| `CONTACT_NOTIFY_TO` | `info@kitakyubuppan.com,goodspeedoffice@gmail.com` | secret_text |
+| `CONTACT_NOTIFY_FROM` | `info@kitakyubuppan.com`（Brevo で認証済みの送信元） | secret_text |
+
+メールの Reply-To には問い合わせ者のアドレスが入るので、**そのまま返信すれば相手に届く**。
+
+> ### ⚠️ 環境変数は必ず secret_text で登録する
+> `wrangler pages deploy` は、**wrangler.toml に書かれていない平文（plain_text）の環境変数を削除する**。
+> 暗号化（secret_text）で登録したものは消えない。
+> 2026-08-20 に `CONTACT_NOTIFY_TO` / `CONTACT_NOTIFY_FROM` を平文で入れてデプロイし、実際に消えた。
+
+> ### ⚠️ PowerShell のパイプで secret を登録しない
+> `$key | npx wrangler pages secret put ...` は改行が混入し、Brevo が 401「Key not found」を返した。
+> 登録は Cloudflare API を直接使うか、値を確認してから手入力する。
+
+登録内容の確認（値は表示されない）:
 
 ```bash
-npx wrangler pages secret put RESEND_API_KEY --project-name kitakyushu-buppan
-npx wrangler pages secret put CONTACT_NOTIFY_TO --project-name kitakyushu-buppan
-npx wrangler pages secret put CONTACT_NOTIFY_FROM --project-name kitakyushu-buppan
+npx wrangler pages secret list --project-name kitakyushu-buppan
 ```
 
-未登録の間は `notification_status` が `skipped` として記録される（通知されていないことが後から分かる）。
+### 通知が届かなくなったときの調べ方
+
+`notification_status` に結果が残る。`sent` 以外が続いていたら通知が壊れている。
+
+```bash
+npx wrangler d1 execute kitakyushu-coop-contacts --remote --command "SELECT notification_status, COUNT(*) FROM contact_submissions GROUP BY notification_status;"
+```
+
+| 値 | 意味 |
+|---|---|
+| `sent` | 送信済み |
+| `skipped` | 変数が未設定のため送っていない |
+| `failed` | 送信を試みて失敗した |
+
+**既知の弱点**: 通知が失敗しても、その事実は D1 に記録されるだけで誰にも通知されない。
+「メールが来ない＝問い合わせが無い」と誤解しないよう、定期的に上のクエリで確認するか、
+日次の自動チェックを別途用意する。
 
 ## CSS / JS を更新したとき
 
