@@ -6,7 +6,7 @@
 |---|---|
 | ホスティング | Cloudflare Pages（プロジェクト名 `kitakyushu-buppan`） |
 | 本番URL | https://kitakyushu-buppan.pages.dev |
-| 独自ドメイン | https://www.kitakyusyubuppan.com （**未接続**。現在はWixを指している） |
+| 独自ドメイン | https://www.kitakyusyubuppan.com （Cloudflare Pagesへ接続済み） |
 | 静的ファイル | `public/` |
 | サーバー処理 | `functions/api/contact.js`（お問い合わせフォームの受け口） |
 | データベース | Cloudflare D1 `kitakyushu-coop-contacts` / テーブル `contact_submissions` |
@@ -22,6 +22,15 @@ Cloudflare Pages 側の本番ブランチは `master`（このリポジトリの
 
 > 以前は Pages 側が `main` を本番としていたため `--branch main` が必要だったが、
 > 付け忘れると本番が更新されないまま成功表示になる事故が起きるため、`master` へ揃えた。
+
+## 独自ドメインのDNS
+
+権威DNSはWixで管理している。`www.kitakyusyubuppan.com` のCNAMEは
+`kitakyushu-buppan.pages.dev`（TTL 3600）。2026-08-20にWix Domain DNS APIで切替済み。
+メール用MX・TXT、ネームサーバー、ルートドメインのAレコードは変更していない。
+
+誤ってWixサイトへ戻した場合は、Wix Domain DNS APIで `www` のCNAMEだけを
+`cdn1.wixdns.net` から `kitakyushu-buppan.pages.dev` へ戻し、権威DNSと公開DNSの両方で確認する。
 
 ## データベースのマイグレーション
 

@@ -25,7 +25,7 @@
 | 項目 | 値 |
 |---|---|
 | 本番URL | https://kitakyushu-buppan.pages.dev |
-| 独自ドメイン | https://www.kitakyusyubuppan.com （**未接続**。現在もWixを指している） |
+| 独自ドメイン | https://www.kitakyusyubuppan.com （Cloudflare Pagesへ接続済み） |
 | ホスティング | Cloudflare Pages（プロジェクト `kitakyushu-buppan`） |
 | Cloudflareアカウント | `19534db9a0b4f7ad9de0571c82028bcd` |
 | リポジトリ | https://github.com/goodspeedoffice-commits/kitakyushu-buppan-website （Private・ブランチ `master`） |
@@ -59,7 +59,8 @@
 - 問い合わせフォームは本番で実送信テスト済み。D1保存＋メール通知とも稼働
 - D1 の `contact_submissions` は0件（テスト行は削除済み）
 - 静的チェック（`tools/check_site.py`）エラー0・警告0
-- **残作業はDNS切替のみ**（後述）
+- 独自ドメインのDNS切替は2026-08-20に完了
+- 旧Wixサイトと初回移行版にあった事業説明・相談分野・ブログ記事・分類・アクセスマップを新サイトへ移植済み
 
 ---
 
@@ -69,6 +70,7 @@
 組合ホームページ/
 ├── AGENTS.md                  ← このファイル（運用知識の正本）
 ├── DEPLOY.md                  ← デプロイ・障害対応の手順
+├── LEGACY_CONTENT_AUDIT.md    ← 旧Wix・初回移行版からの情報移植対応表
 ├── wrangler.toml              ← Pages設定（出力先 public / D1バインディング）
 ├── public/                    ← 静的サイト本体。ここがそのまま配信される
 │   ├── index.html ほか16ページ
@@ -219,17 +221,20 @@ npx wrangler d1 execute kitakyushu-coop-contacts --remote --command "SELECT noti
 
 ---
 
-## 残作業（CEO操作が必要）
+## 独自ドメインと旧サイト情報の移行（2026-08-20完了）
 
-**DNS切替。これをしないとAmazonに申請できない。** 審査は申請フォームに入れたドメインを見に来る。
+- Cloudflare Pages のカスタムドメイン `www.kitakyusyubuppan.com` は接続済み
+- Wix管理DNSの `www` CNAME は `kitakyushu-buppan.pages.dev` を指す
+- 旧Wixサイトの固定ページ9件、ブログ記事2件、ブログ分類4件を直接取得して照合済み
+- 初回コミット `675ea4b` に残っていた旧事業説明とも照合済み
+- `tools/check_site.py` は、移植した主要情報が将来消えた場合もエラーにする
 
-1. Cloudflareダッシュボード → Pages → `kitakyushu-buppan` → Custom domains → `www.kitakyusyubuppan.com` を追加
-2. Wixのドメイン管理画面で `www` のCNAMEを `kitakyushu-buppan.pages.dev` に変更
+移植時に除外した旧情報:
+- 若松区今光の旧住所と旧電話番号（現在の主たる事務所ではない）
+- 根拠未確認の「Amazonベストセラーを獲得」「Amazon物販に革命」等の実績・誇張表現
+- 「月額制」等、現行の契約条件として確認できていない表現
 
-切替後にやること:
-- 全ページが独自ドメインで開くか確認
-- 旧Wix URL（`/about-5` `/general-5` `/map` `/blog` `/post/*` `/複製-*`）の301を確認
-- Wix契約の扱いをCEOに確認（解約するか併存させるか）
+サイト側の移行作業は完了。Amazon Adsパートナーネットワークへの申請実行は本サイト保守とは別工程。
 
 ---
 

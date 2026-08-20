@@ -6,14 +6,14 @@
 # --- 旧Wixページ → 新ページ ---
 /about-5                          /consulting              301
 /general-5                        /tokushoho               301
-/map                              /about                   301
-/blank                            /                        301
+/map                              /about#access-map        301
+/blank                            /members-only            302
 
-# 重複していた3ページ（本文がすべて同一だったもの）は業務内容ページへ統合
+# URL名と画面上の事業名が入れ替わっていた旧Wixページを、実際の本文に対応する節へ転送
 # ※ パーセントエンコードされたURLで届いた場合も Cloudflare 側でデコードして照合される
-/複製-共同仕入事業                /services                301
-/複製-商品拡販支援事業            /services                301
-/複製-コンサルティングサービス    /services                301
+/複製-共同仕入事業                /services#product-expansion    301
+/複製-商品拡販支援事業            /services#product-development  301
+/複製-コンサルティングサービス    /services#joint-purchasing     301
 
 # 旧サイトマップ（Wixが生成していたもの）→ 現行サイトマップ
 # ワイルドカードを含む行より前に置く（Cloudflare の推奨順）
@@ -21,7 +21,13 @@
 /blog-posts-sitemap.xml           /sitemap.xml             301
 /blog-categories-sitemap.xml      /sitemap.xml             301
 
-# 旧ブログ（Wix Blog）→ お知らせ
+# 旧ブログ（Wix Blog）→ 引き継いだ記事・分類
 /blog                             /news                    301
+/blog/categories/活動報告          /news#category-activity  301
+/blog/categories/組合商品紹介      /news#category-products  301
+/blog/categories/組合参加事業者紹介 /news#category-members   301
+/blog/categories/組合サービス紹介  /news#category-services  301
+/post/food-expo-kyushu-2026に出展します-10月6日・7日-福岡国際センター /news#food-expo-2026 301
+/post/第７回しんきん合同商談会に出展いたします！ /news#shinkin-2023 301
 /blog/*                           /news                    301
 /post/*                           /news                    301
