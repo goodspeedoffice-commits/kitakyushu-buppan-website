@@ -177,7 +177,7 @@ for p in pages:
     html = p.read_text(encoding="utf-8")
     name = p.name
 
-    if 'href="/favicon.svg?v=20260820"' not in html:
+    if 'href="/favicon-coop-20260821.png"' not in html:
         errors.append(f"{name}: 組合ファビコンの指定がありません")
 
     # 公開ページの上部メニューに、提携先と組合員専用ページへの入口を維持する。
