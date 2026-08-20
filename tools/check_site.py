@@ -79,6 +79,7 @@ REQUIRED_MIGRATED_CONTENT = {
         "組合参加事業者紹介", "組合サービス紹介",
         "/images/site/shinkin-event-2023.avif",
         "/images/site/exhibition-members.avif",
+        "/images/social/posts/food-expo-kyushu-2026.png",
     ],
     "about.html": [
         "アクセスマップ", 'id="access-map"', "九州・沖縄・山口",
