@@ -22,3 +22,16 @@
 | `analytics-dashboard-stock.avif` | Negative Space | https://www.pexels.com/photo/marketing-iphone-smartphone-notebook-34069/ |
 
 無料素材を組合の実績写真として説明しない。altとキャプションには「イメージ」と明記する。
+
+# 参加企業リンクのアイコン
+
+旧Wixサイトの参加企業カードで実際に使用されていた画像を、2026-08-20にWix配信元から保存した。
+表示サイズは旧サイトと同じ39×39px。推測で描き直したSVGへ置き換えない。
+
+- `public/images/social/website-goodspeed.png`: `714bd6_7aa5cf22f6f6495ebf314771422ff449~mv2.png`
+- `public/images/social/instagram-goodspeed.png`: `11062b_55e4be1e75564866b6c28290f9a9d271~mv2.png`
+- `public/images/social/x-goodspeed.png`: `11062b_81cefb1bd2e2490d892a1cad5cc1cd8a~mv2.png`
+- `public/images/social/facebook.png`: `e316f544f9094143b9eac01f1f19e697.png`
+- `public/images/social/website.png`: `11062b_b0421c4e0684420ba945693a8df9ddbd~mv2.png`
+- `public/images/social/youtube.png`: `11062b_8dcadfa428954b1d919f8499f75aa27a~mv2.png`
+- `public/images/social/instagram-coop.png`: `8d6893330740455c96d218258a458aa4.png`

@@ -93,7 +93,10 @@ REQUIRED_MIGRATED_CONTENT = {
         "/images/members/fujien.avif", "/images/members/member-placeholder.avif",
         "/images/members/shop-kikyou.avif", "/images/members/cinnamon-house.avif",
         "/images/members/kitakyushu-coop.avif",
-        'aria-hidden="true"',
+        "/images/social/website-goodspeed.png", "/images/social/instagram-goodspeed.png",
+        "/images/social/x-goodspeed.png", "/images/social/facebook.png",
+        "/images/social/website.png", "/images/social/youtube.png",
+        "/images/social/instagram-coop.png", 'width="39" height="39"',
     ],
     "partners.html": [
         "八幡東就労支援センターすずらん",
@@ -249,6 +252,16 @@ if '/images/site/original-home-hero.jpg' not in style_css:
     errors.append("style.css: 旧Wixトップ背景画像の指定がありません")
 if not hero_image.exists():
     errors.append("images/site/original-home-hero.jpg: 旧Wixトップ背景画像がありません")
+
+# 参加企業リンクは、旧Wixで使用していた39px画像アイコンを維持する。
+member_icon_rule = re.search(r"\.member-link img\s*\{([^}]*)\}", style_css, re.S)
+if not member_icon_rule:
+    errors.append("style.css: 参加企業のSNS画像アイコン設定がありません")
+else:
+    member_icon_style = member_icon_rule.group(1)
+    for required_style in ['width: 39px', 'height: 39px', 'object-fit: cover']:
+        if required_style not in member_icon_style:
+            errors.append(f"style.css: 参加企業のSNSアイコン表示設定が欠けています -> {required_style}")
 
 # sitemap.xml と実ページの突き合わせ
 sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
