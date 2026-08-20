@@ -43,16 +43,17 @@ DUMMY = [
 # 文言の全面固定ではなく、各情報分野が現行ページに存在することを確認する。
 REQUIRED_MIGRATED_CONTENT = {
     "index.html": [
-        "物販事業者をつなぎ、ともに成長する協同組合",
+        "物販事業者をつなぎ", "ともに成長する協同組合",
+        "九州・沖縄・山口", "北九州市・飯塚市を拠点に活動",
         "共同仕入事業", "商品拡販支援事業", "商品企画開発事業",
         "共同販売事業", "物販サポート事業", "商品買取再販事業",
-        'href="/members-only"', "組合員専用ページ",
+        'href="/members"', "参加企業紹介",
         "https://www.youtube.com/@obo5290",
         "https://instagram.com/kitakyubuppan/",
         "https://www.facebook.com/kitakyubuppan",
-        "/images/members/goodspeed-office.avif",
-        "/images/members/fujien.avif", "/images/members/shop-kikyou.avif",
-        "/images/members/cinnamon-house.avif", "/images/members/kitakyushu-coop.avif",
+        "/images/site/analytics-dashboard-stock.avif",
+        "/images/site/ecommerce-packing-stock.avif",
+        "/images/site/consulting-meeting-stock.avif",
     ],
     "services.html": [
         'id="joint-purchasing"', 'id="product-expansion"',
@@ -63,6 +64,7 @@ REQUIRED_MIGRATED_CONTENT = {
         "Amazon出品・運用支援", "カタログ作成・検索対策",
         "商品リサーチ・仕入れ戦略", "メーカー・卸売事業者との商談支援",
         "広告・販促計画", "運用支援・EC化支援",
+        "/images/site/consulting-meeting-stock.avif",
     ],
     "news.html": [
         'id="food-expo-2026"', 'id="shinkin-2023"',
@@ -71,8 +73,15 @@ REQUIRED_MIGRATED_CONTENT = {
         "執筆：大保 俊博", "執筆：管理人",
         "記事の分類", "活動報告", "組合商品紹介",
         "組合参加事業者紹介", "組合サービス紹介",
+        "/images/site/shinkin-event-2023.avif",
+        "/images/site/exhibition-members.avif",
     ],
-    "about.html": ["アクセスマップ", 'id="access-map"'],
+    "about.html": [
+        "アクセスマップ", 'id="access-map"', "九州・沖縄・山口",
+        "/images/site/cooperative-booth-members.avif",
+    ],
+    "amazon-sales-support.html": ["/images/site/ecommerce-packing-stock.avif"],
+    "amazon-ads-support.html": ["/images/site/analytics-dashboard-stock.avif"],
     "members.html": [
         "goodspeed office", "株式会社FUJIEN", "imaimashop", "Shop kikyou",
         "Cinnamon House", "池松 真吾", "山田 智也",
@@ -83,6 +92,7 @@ REQUIRED_MIGRATED_CONTENT = {
         "/images/members/fujien.avif", "/images/members/member-placeholder.avif",
         "/images/members/shop-kikyou.avif", "/images/members/cinnamon-house.avif",
         "/images/members/kitakyushu-coop.avif",
+        'aria-hidden="true"',
     ],
     "contact.html": [
         "〒820-0066", "福岡県飯塚市幸袋781-258",
@@ -98,6 +108,8 @@ DISALLOWED_STALE_OR_UNVERIFIED = [
     "https://www.youtube.com/@kitakyushu_buppan",
     "https://www.instagram.com/kitakyushu_buppan/",
     "https://www.facebook.com/kitakyushubuppan/",
+    "https://microgolfgear.com/",
+    "旧サイトで掲載していた各事業者のロゴ・アイコンを引き継いでいます。",
 ]
 
 REQUIRED_REDIRECTS = {
